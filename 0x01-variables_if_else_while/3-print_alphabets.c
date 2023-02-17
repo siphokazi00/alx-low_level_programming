@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 /**
  * main - entry point
  *
@@ -6,6 +9,7 @@
  */
 
 int main(void)
+
 {
 	char c;
 	char d;
