@@ -1,12 +1,6 @@
-#include "main.h"
+#include <stdio.h>
 
-void myname(char name[])
-{
-	printf("My name is %s", name);
-}
-
-int main()
-{
-	char name[];
-	myname(name);
+int main(int argc, char *argv[]) {
+    printf("%s\n", argv[0]);
+    return 0;
 }
