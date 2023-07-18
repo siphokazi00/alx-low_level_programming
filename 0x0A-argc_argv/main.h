@@ -1,0 +1,1 @@
+void myname(char name[])
