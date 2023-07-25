@@ -11,7 +11,7 @@ int _printf(const char *format, ...)
 	int count = 0;
 	char c, *s;
 
-	a_start(args, format);
+	va_start(args, format);
 	while (*format)
 	{
 		if (*format == '%')
