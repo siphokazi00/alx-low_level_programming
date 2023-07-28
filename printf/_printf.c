@@ -1,81 +1,70 @@
 #include "main.h"
-#include <unistd.h>
-#include <stdio.h>
 
-#define BUFFER_SIZE 1024
+void print_buffer(char buffer[], int *buff_ind);
 
 /**
- * _printf - Produces output according to a format.
+ * _printf - Produces output according to a format
+ * string containing directives.
  * @format: The format string containing directives.
+ * @...: The variable number of arguments to be formatted.
+ *
  * Return: The number of characters printed (excluding the null byte).
  */
+
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int count = 0;
-	char buffer[BUFFER_SIZE];
-	int buff_ind = 0;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
 
 	if (format == NULL)
 		return (-1);
 
-	va_start(args, format);
+	va_start(list, format);
 
-	while (*format)
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		if (*format != '%')
+		if (format[i] != '%')
 		{
-			buffer[buff_ind++] = *format;
-			if (buff_ind == BUFFER_SIZE)
-			{
-				count += write(1, buffer, BUFFER_SIZE);
-				buff_ind = 0;
-			}
-			count++;
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				print_buffer(buffer, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
 		}
 		else
 		{
-			format++; /* Move past the '%' character */
-
-			if (*format == '\0')
-				break;
-
-			if (*format == '%') /* Double '%' case */
-			{
-				buffer[buff_ind++] = '%';
-				if (buff_ind == BUFFER_SIZE)
-				{
-					count += write(1, buffer, BUFFER_SIZE);
-					buff_ind = 0;
-				}
-				count++;
-			}
-			else
-			{
-				/* Handle custom conversion specifiers and other conversions */
-				if (_handle_custom(format, args, buffer, &buff_ind))
-				{
-					/* Custom conversion specifier found, move format pointer */
-					format++;
-				}
-				else
-				{
-					/* Handle normal conversion specifiers */
-					buffer[buff_ind++] = '%';
-					if (buff_ind == BUFFER_SIZE)
-					{
-						count += write(1, buffer, BUFFER_SIZE);
-						buff_ind = 0;
-					}
-					count++;
-				}
-			}
+			print_buffer(buffer, &buff_ind);
+			flags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer,
+				flags, width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
 		}
-		format++;
 	}
 
-	count += write(1, buffer, buff_ind);
-	va_end(args);
+	print_buffer(buffer, &buff_ind);
 
-	return (count);
+	va_end(list);
+
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - Prints the contents of a buffer to the standard output.
+ * @buffer: The character buffer containing the data to be printed.
+ * @buff_ind: Pointer to the current index in the buffer.
+ */
+void print_buffer(char buffer[], int *buff_ind)
+{
+	if (*buff_ind > 0)
+		write(1, &buffer[0], *buff_ind);
+
+	*buff_ind = 0;
 }
