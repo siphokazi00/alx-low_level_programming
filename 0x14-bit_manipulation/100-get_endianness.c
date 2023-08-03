@@ -2,17 +2,13 @@
 #include <stdio.h>
 
 /**
- * get_endianness - Checks endianness.
+ * get_endianness - Check the endianness of the system.
  *
- * Return: 0 for big, 1 for little.
+ * Return: 0 if system is big endian, 1 if it is little.
  */
 int get_endianness(void)
 {
-	union
-	{
-		int num;
-		char bytes[sizeof(int)];
-	} endian;
+	union endian_union endian;
 
 	endian.num = 1;
 
