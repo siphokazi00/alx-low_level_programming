@@ -2,12 +2,10 @@
 #include <stdio.h>
 
 /**
- * flip_bits - Returns the no. of bits needed to be flipped
- * to get from one no. to another.
- * @n: The first number.
- * @m: The second number.
+ * count_set_bits - Counts the no. of set bits in a given no.
+ * @num: The bits to be counted.
  *
- * Return: The number of bits to change.
+ * Return: The number of set bits in the given number.
  */
 unsigned int count_set_bits(unsigned long int num)
 {
@@ -20,7 +18,18 @@ unsigned int count_set_bits(unsigned long int num)
 	}
 	return (count);
 }
+
+/**
+ * flip_bits - Calculates no. of bits needed to be flipped
+ * to convert one number to another.
+ * @n: The first number.
+ * @m: The second number.
+ *
+ * Return: No. of bits needed to flip to convert n to m.
+ */
 unsigned int flip_bits(unsigned long int n, unsigned long int m)
 {
+	unsigned long int xor_result = n ^ m;
 
+	return (count_set_bits(xor_result));
 }
