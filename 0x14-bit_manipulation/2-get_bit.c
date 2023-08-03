@@ -1,6 +1,13 @@
 #include "main.h"
 #include <stdio.h>
 
+/**
+ * get_bit - Returns the value of abit at an index in a deci no.
+ * @n: no. to search
+ * @index: index of the bit
+ *
+ * Return: The value of the bit.
+ */
 int get_bit(unsigned long int n, unsigned int index)
 {
 	unsigned long int mask;
