@@ -1,3 +1,5 @@
 all:
 	cc -o school school.c
+clean:
+	rm -f school
 
